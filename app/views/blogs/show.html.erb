@@ -1,0 +1,35 @@
+<h1><%= @blog.title %></h1>
+<p><%= @blog.content %></p>
+
+<% if current_user == @blog.user %>
+  <%= link_to "Edit", edit_blog_path(@blog), class: "btn btn-warning" %> |
+  <%= link_to "Delete", blog_path(@blog), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %> |
+<% end %>
+<%= link_to "Download PDF", blog_path(@blog, format: :pdf), target: "_blank", class: "btn btn-primary" %>
+
+<%= link_to "Back to Blogs", blogs_path, class: "btn btn-secondary" %>
+
+
+<h2>Comments</h2>
+
+<% @blog.comments.each do |comment| %>
+  <p>
+    <strong><%= comment.user.username %>:</strong>
+    <%= comment.message %>
+    <% if comment.user == current_user %>
+      <%= button_to "Delete", blog_comment_path(@blog, comment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    <% end %>
+  </p>
+<% end %>
+
+<% if logged_in? %>
+  <%= form_with(model: [@blog, Comment.new], local: true) do |form| %>
+    <p>
+      <%= form.label :message, "Add a comment" %><br>
+      <%= form.text_area :message, required: true %>
+    </p>
+    <%= form.submit "Post Comment", class: "btn btn-primary" %>
+  <% end %>
+<% else %>
+  <p>You must be logged in to comment.</p>
+<% end %>

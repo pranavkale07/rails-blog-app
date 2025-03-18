@@ -1,0 +1,11 @@
+<h1>All Blogs</h1>
+
+<%= link_to "New Blog", new_blog_path, class: "btn btn-primary" %>
+
+<ul>
+  <% @blogs.each do |blog| %>
+    <li>
+      <%= link_to blog.title, blog_path(blog) %>
+    </li>
+  <% end %>
+</ul>
