@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="card-title"><%= @blog.title %></h1>
+      <p class="card-text"><%= @blog.content %></p>
+
+      <% if current_user == @blog.user %>
+        <div class="mb-3">
+          <%= link_to "Edit", edit_blog_path(@blog), class: "btn btn-warning" %>
+          <%= link_to "Delete", blog_path(@blog), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        </div>
+      <% end %>
+
+      <div class="d-flex gap-2">
+        <%= link_to "Download PDF", blog_path(@blog, format: :pdf), target: "_blank", class: "btn btn-primary" %>
+        <%= link_to "Back to Blogs", blogs_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <div class="mt-4">
+    <h2>Comments</h2>
+
+    <% @blog.comments.each do |comment| %>
+      <div class="card mt-2">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <p class="mb-0">
+            <strong><%= comment.user.username %>:</strong> <%= comment.message %>
+          </p>
+          <% if (current_user == @blog.user || comment.user == current_user) %>
+            <%= button_to "Delete", blog_comment_path(@blog, comment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if logged_in? %>
+      <div class="card mt-3 shadow-sm">
+        <div class="card-body">
+          <%= form_with(model: [@blog, Comment.new], local: true) do |form| %>
+            <div class="mb-3">
+              <%= form.label :message, "Add a comment", class: "form-label" %>
+              <%= form.text_area :message, required: true, class: "form-control", rows: 3 %>
+            </div>
+            <%= form.submit "Post Comment", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <p class="text-muted mt-3">You must be logged in to comment.</p>
+    <% end %>
+  </div>
+</div>

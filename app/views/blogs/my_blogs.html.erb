@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">My Blogs</h1>
+    <%= link_to "New Blog", new_blog_path, class: "btn btn-success" %>
+  </div>
+
+  <% if @blogs.any? %>
+    <div class="list-group">
+      <% @blogs.each do |blog| %>
+        <div class="list-group-item py-4 px-4 mb-3 rounded shadow-sm border-0" style="background: #f8f9fa;">
+          <h3 class="mb-2">
+            <%= link_to blog.title, blog_path(blog), class: "text-decoration-none text-dark fw-bold" %>
+          </h3>
+          <p class="text-muted mb-3" style="font-size: 1.1rem;">
+            <%= truncate(blog.content, length: 150) %>
+          </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+              <%= blog.created_at.strftime("%B %d, %Y") %>
+            </small>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">You have not created any blogs yet.</p>
+  <% end %>
+  <%= link_to "Back to All Blogs", blogs_path, class: "btn btn-outline-primary mt-3" %>
+
+</div>

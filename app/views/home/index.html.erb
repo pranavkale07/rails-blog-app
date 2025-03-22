@@ -1,0 +1,36 @@
+<div class="container mt-5">
+  <div class="text-center">
+    <h1 class="text-primary fw-bold">Welcome to Blogify</h1>
+    <p class="lead">Explore and share your thoughts with the world!</p>
+
+    <div class="mt-4">
+      <%= link_to "Explore Blogs", blogs_path, class: "btn btn-primary btn-lg me-3" %>
+      <% if logged_in? %>
+        <%= link_to "Create New Blog", new_blog_path, class: "btn btn-success btn-lg" %>
+      <% else %>
+        <%= link_to "Sign Up", signup_path, class: "btn btn-outline-primary btn-lg" %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @blogs.any? %>
+    <div class="mt-5">
+      <h2 class="text-center">Latest Blogs</h2>
+      <div class="row justify-content-center">
+        <% @blogs.first(3).each do |blog| %>
+          <div class="col-md-8 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title"><%= blog.title %></h5>
+                <p class="card-text text-muted">
+                  <%= truncate(blog.content, length: 150) %>
+                </p>
+                <%= link_to "Read More", blog_path(blog), class: "btn btn-outline-primary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
