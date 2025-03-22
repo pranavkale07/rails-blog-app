@@ -121,3 +121,5 @@
 
 # Ignore AWS S3 cache (if applicable).
 /.s3-cache
+
+/structure.txt
