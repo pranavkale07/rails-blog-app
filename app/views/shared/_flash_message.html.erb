@@ -1,11 +1,13 @@
-<% if flash[:alert] %>
+<div id="flash_message">
+  <% if flash[:alert] %>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <%= flash[:alert] %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <%= flash[:alert] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<% elsif flash[:notice] %>
+  <% elsif flash[:notice] %>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <%= flash[:notice] %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <%= flash[:notice] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<% end %>
+  <% end %>
+</div>

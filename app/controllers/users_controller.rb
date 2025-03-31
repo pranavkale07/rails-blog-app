@@ -15,7 +15,17 @@ class UsersController < ApplicationController
             flash[:notice] = "Welcome, #{@user.username}!"
             redirect_to blogs_path
         else
-            render :new, status: :unprocessable_entity
+            # flash.now[:error] = @user.errors.full_messages.join(", ")
+            # render :new, status: :unprocessable_entity
+            Rails.logger.info "🚨 Validation Errors: #{@user.errors.full_messages.join(", ")}"
+            flash.now[:alert] = @user.errors.full_messages.join(", ")
+
+            respond_to do |format|
+                format.html { render :new, status: :unprocessable_entity }
+                format.turbo_stream do
+                    render turbo_stream: turbo_stream.update("flash_message", partial: "shared/flash_message")
+                end
+            end
         end
     end
     
@@ -30,6 +40,7 @@ class UsersController < ApplicationController
             flash[:notice] = "Profile updated successfully!"
             redirect_to @user
         else
+            flash[:error] = @user.errors.full_messages.join(", ")
             render :edit, status: :unprocessable_entity
         end
     end
